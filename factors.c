@@ -33,6 +33,11 @@ int main(int argc, char *argv[])
 	char *filename = argv[1];
 	signal(SIGALRM, timeout_handler);
 
+	if (argc != 2)
+	{
+		printf("File path not provided\n");
+		return (1);
+	}
 	file = fopen(filename, "r");
 
 	int number;
