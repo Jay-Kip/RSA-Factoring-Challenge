@@ -1,23 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <signal.h>
+#include <unistd.h>
 void factorize(int n)
 {
 	char line[256];
-	int i;
+	int div = 2;
 
-	for (i = 2; i * i <= n; i++)
+	while (n > 1)
 	{
-		printf("%d=%d*%d\n", n, i, n / i);
+		if (n % div == 0)
+		{
+			printf("%d=%d*%d\n", n, div, n / div);
+			n /= div;
+		}
+		else
+		{
+			div++;
+		}
 	}
 
 }
-
+void timeout_handler(int signum)
+{
+	printf("Program timed out.\n");
+	exit(0);
+}
 
 int main(int argc, char *argv[])
 {
 	FILE *file;
 	char *filename = argv[1];
+	signal(SIGALRM, timeout_handler);
 
 	file = fopen(filename, "r");
 
@@ -35,7 +49,7 @@ int main(int argc, char *argv[])
 	}*/
 
 	//factorize(file);
-
+	alarm(5);
 
 	fclose(file);
 
